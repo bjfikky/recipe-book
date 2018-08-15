@@ -1,11 +1,14 @@
 <template>
     <div id="app">
         <Navbar/>
-        <div id="nav" class="container">
-            <router-link to="/">Home</router-link> |
-            <router-link to="/about">About</router-link>
+        <div id="nav">
+            <!--<router-link to="/">Home</router-link> |-->
+            <!--<router-link to="/about">About</router-link>-->
         </div>
-        <router-view/>
+        <div class="container">
+            <router-view/>
+        </div>
+
     </div>
 </template>
 
@@ -20,6 +23,8 @@
 </script>
 
 <style scoped>
-
+.container {
+    padding: 20px 0;
+}
 </style>
 
