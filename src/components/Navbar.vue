@@ -1,10 +1,13 @@
 <template>
-    <nav class="navbar">
+    <nav class="navbar brown">
         <div class="nav-wrapper">
-            <span><router-link to="/" class="brand-logo">Recipe Book</router-link></span>
-            <button class="btn-floating btn-large halfway-fab waves-effect waves-light teal">
-                <i class="material-icons">add</i>
-            </button>
+            <span><router-link v-bind:to="{ name: 'home' }" class="brand-logo">Recipe Book</router-link></span>
+            <router-link v-bind:to="{ name: 'addRecipe' }">
+                <button class="btn-floating btn-large halfway-fab waves-effect waves-light teal">
+                    <i class="material-icons">add</i>
+                </button>
+            </router-link>
+
         </div>
     </nav>
 </template>
