@@ -2,13 +2,18 @@
     <div>
         <h4>Add Recipe</h4>
         <div class="row">
+
+<!-- ====== ADD RECIPE FORM SECTION =================================================================================-->
             <div class="col s6">
                 <form>
+                    <!-- TITLE -->
                     <div class="field">
                         <label for="title">Title:</label>
                         <input id="title" type="text" v-model="recipe.title"/>
                     </div>
 
+
+                    <!-- COOKING TIME and SERVING-->
                     <div class="row field">
                         <div class="col s6">
                             <label for="cooking-time">Cooking Time:</label>
@@ -20,44 +25,52 @@
                         </div>
                     </div>
 
+
+                    <!-- DESCRIPTION -->
                     <div class="field">
                         <label for="description">Description:</label>
                         <textarea id="description" class="materialize-textarea" v-model="recipe.description"></textarea>
                     </div>
 
-                    <h6>Ingredients <small><em>(press 'space' or click the '+' button to add)</em></small></h6>
 
+                    <!-- INGREDIENTS -->
+                    <h6>Ingredients</h6>
                     <div class="row field">
                         <div class="col s6">
-                            <label for="ingredient">Ingredient {{ recipe.ingredients.length + 1 }}:</label>
+                            <label for="ingredient">{{ ingredientEdit ? 'Editing ' : '' }}Ingredient:</label>
                             <input id="ingredient" type="text" v-model="ingredient.name"/>
                         </div>
+
                         <div class="col s4">
                             <label for="quantity">Quantity:</label>
-                            <input id="quantity" type="text" v-model="ingredient.quantity" v-on:keyup.space="addIngredient"/>
+                            <input id="quantity" type="text" v-model="ingredient.quantity"/>
                         </div>
+
                         <div class="col s2 add-ingredient-btn">
-                            <button v-on:click.prevent="addIngredient" class="btn-floating btn-small grey darken-2">
+                            <button v-on:click.prevent="addIngredient(ingredient)" class="btn-floating btn-small grey darken-2">
                                 <i class="material-icons">add</i>
                             </button>
                         </div>
                     </div>
 
-                    <h6>Steps <small><em>(press 'enter' or click the '+' button to add)</em></small></h6>
 
+                    <!-- STEPS -->
+                    <h6>Steps</h6>
                     <div class="row field">
                         <div class="col s10">
-                            <label for="step">Step {{ stepNumber }}:</label>
+                            <label for="step">{{ stepEdit ? 'Editing ' : '' }}Step {{ stepNumber }}:</label>
                             <textarea id="step" class="materialize-textarea" v-model="step.name" v-on:keyup.enter="addStep(step)"></textarea>
                         </div>
 
                         <div class="col s2 add-ingredient-btn">
-                            <button v-on:click.prevent="addStep" class="btn-floating btn-small grey darken-2">
+                            <button v-on:click.prevent="addStep(step)" class="btn-floating btn-small grey darken-2">
                                 <i class="material-icons">add</i>
                             </button>
                         </div>
                     </div>
 
+
+                    <!-- VEGETARIAN -->
                     <div class="switch">
                         <label>
                             Non-vegetarian
@@ -67,6 +80,8 @@
                         </label>
                     </div>
 
+
+                    <!-- SUBMIT BUTTON-->
                     <div class="field submit">
                         <button v-on:click.prevent="addRecipe" class="btn waves-effect waves-light" type="submit" name="action">Submit
                             <i class="material-icons right">send</i>
@@ -74,6 +89,8 @@
                     </div>
                 </form>
             </div>
+
+<!-- ====== PREVIEW SECTION ======================================================================================== -->
 
             <div class="col s6">
                 <div class="preview">
@@ -91,9 +108,9 @@
                             <h6>Description:</h6>
                             <p>{{ recipe.description }} </p>
 
-                            <h6>Ingredients:</h6>
+                            <h6>Ingredients: <small><em class="red-text">(<b>*click*</b> an ingredient to edit, <b>*right-click*</b> to delete)</em></small></h6>
                             <p>
-                                <span v-for="(ing, index) in recipe.ingredients" v-bind:key="index">
+                                <span class="preview-ingredient" v-for="(ing, index) in recipe.ingredients" v-bind:key="index" v-on:click="pickIngredient(ing, index)" v-on:click.right.prevent="deleteIngredient(index)">
                                     {{' ' + ing.quantity }} {{ ing.name }},
                                 </span>
                             </p>
@@ -132,7 +149,9 @@
                     vegetarian: false,
                 },
 
-                ingredient: { name: '', quantity: '' },
+                ingredient: {},
+                ingredientEdit: false,
+
                 step: {},
                 stepEdit: false,
                 stepNumber: 1,
@@ -140,10 +159,25 @@
         },
 
         methods: {
-            addIngredient() {
-                this.recipe.ingredients.push({ name: this.ingredient.name , quantity: this.ingredient.quantity })
-                this.ingredient.name = ''
-                this.ingredient.quantity = ''
+            addIngredient(ingredient) {
+                if(this.ingredientEdit) {
+                    this.recipe.ingredients.splice(ingredient.index, 1, { name: this.ingredient.name , quantity: this.ingredient.quantity, index: ingredient.index })
+                    this.ingredientEdit = false
+                } else {
+                    this.recipe.ingredients.push({ name: this.ingredient.name , quantity: this.ingredient.quantity, index: this.recipe.ingredients.length })
+                }
+
+                this.ingredient = {}
+            },
+
+            deleteIngredient(index) {
+                this.recipe.ingredients.splice(index, 1)
+            },
+
+            pickIngredient(ingredient, index) {
+                ingredient.index = index
+                this.ingredient = ingredient
+                this.ingredientEdit = true
             },
 
             addStep(step) {
@@ -159,7 +193,6 @@
             },
 
             deleteStep(index) {
-                console.log(index)
                 this.recipe.steps.splice(index, 1)
                 this.stepNumber = this.recipe.steps.length + 1
             },
@@ -214,10 +247,11 @@
         font-style: italic;
     }
 
-    .preview-step:hover {
+    .preview-step:hover, .preview-ingredient:hover {
         cursor: pointer;
-        background-color: #f4f4f4;
+        background-color: #ccc;
     }
+
 
 
 </style>
