@@ -5,13 +5,13 @@
             <p>{{ recipe.description }}</p>
         </div>
         <div class="ingredients">
-            <div class="chip" v-for="(ingredient, index) in recipe.ingredients" v-bind:key="index">
+            <div class="chip" v-for="(ingredient, index) in trimIngredients" v-bind:key="index">
                 {{ ingredient.name }}
             </div>
         </div>
         <div class="card-action">
             <a href="">Edit</a>
-            <a href="" v-on:click="deleteRecipe(recipe.id)" class="right">Delete</a>
+            <a href="" v-on:click.prevent="deleteRecipe(recipe.id)" class="right">Delete</a>
         </div>
     </div>
 </template>
@@ -28,6 +28,20 @@
             }
         },
 
+        computed: {
+            trimIngredients() {
+                let more = this.recipe.ingredients.length - 4
+
+                let trimedIngredients = this.recipe.ingredients.filter(ingredient => {
+                    return ingredient.index < 4
+                })
+
+                trimedIngredients.push({name: `... ${more} others`})
+
+                return trimedIngredients
+            }
+        },
+
         created() {
 
         }
@@ -41,5 +55,9 @@
 
     .ingredients {
         padding: 0 10px;
+    }
+
+    .chip {
+        font-size: .7em;
     }
 </style>

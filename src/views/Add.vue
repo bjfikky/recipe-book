@@ -119,7 +119,7 @@
                             <div class="steps">
                                 <span v-for="(step, index) in recipe.steps" v-bind:key="index">
                                     <h6>Step {{ recipe.steps.indexOf(step) + 1 }}:</h6>
-                                <p v-on:click.exact="pickStep(step, index)" v-on:click.right.prevent="deleteStep(index)" class="preview-step">{{ step.name }} {{ index + 1 }} </p>
+                                <p v-on:click.exact="pickStep(step, index)" v-on:click.right.prevent="deleteStep(index)" class="preview-step">{{ step.name }}</p>
                                 </span>
                             </div>
                         </div>
@@ -132,6 +132,8 @@
 </template>
 
 <script>
+    import db from '../firebase/init'
+
     export default {
         name: 'add',
 
@@ -205,7 +207,9 @@
             },
 
             addRecipe() {
-                console.log(this.recipe)
+                db.collection('recipes').add(this.recipe).then(() => {
+                    this.$router.push({ name: 'home' })
+                })
             }
         },
     }
