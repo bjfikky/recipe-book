@@ -60,4 +60,8 @@
     .chip {
         font-size: .7em;
     }
+
+    .card:hover {
+        cursor: pointer;
+    }
 </style>
