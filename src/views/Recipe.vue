@@ -8,6 +8,8 @@
                 <h5 class="details">Cooking Time: <span>{{ recipe.cookingTime }}</span>Servings: <span>{{ recipe.serving }}</span> Vegetarian: <span>{{ recipe.vegetarian ? 'yes' : 'no'}}</span></h5>
             </div>
 
+            <!--TODO: Iterate over ingredients and steps-->
+
             <div class="ingredients">
                 <h5>Ingredients:</h5>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto atque aut, cum cumque dolore, fuga

@@ -1,8 +1,15 @@
 <template>
     <div class="home">
-        <h4>Recipes</h4>
+        <div class="row">
+            <div class="col s6">
+                <h4>Recipes </h4>
+            </div>
+            <div class="col s6">
+                <span class="search-bar"><input type="text" placeholder="Search recipes" name="" v-model="searchTerm"></span>
+            </div>
+        </div>
         <div class="recipes">
-            <router-link v-for="recipe in recipes" v-bind:key="recipe.id" v-bind:to="{ name: 'recipe', params: {recipe_id: recipe.id} }">
+            <router-link v-for="recipe in filterBySearchTerm" v-bind:key="recipe.id" v-bind:to="{ name: 'recipe', params: {recipe_id: recipe.id} }">
                 <RecipeCard  v-bind:recipe="recipe" v-on:deleteRecipe="deleteRecipe"/>
             </router-link>
         </div>
@@ -19,6 +26,8 @@ export default {
     data() {
         return {
             recipes: [],
+
+            searchTerm: ''
         }
     },
 
@@ -47,6 +56,14 @@ export default {
                         return recipe.id !== recipeId
                     })
                 })
+        },
+    },
+
+    computed: {
+        filterBySearchTerm() {
+            return this.recipes.filter(recipe => {
+                return recipe.title.toLowerCase().match(this.searchTerm.toLowerCase())
+            })
         }
     },
 
@@ -65,8 +82,13 @@ export default {
 }
 
     .card {
-        height: 94.2%;
+        height: 94.4%;
     }
+
+    input {
+        display: inline;
+    }
+
 
 
 </style>
