@@ -48,7 +48,6 @@ export default {
         },
 
         deleteRecipe(payload) {
-            console.log(payload.recipeId)
             let recipeId = payload.recipeId
             db.collection('recipes').doc(recipeId).delete()
                 .then(() => {
@@ -62,7 +61,7 @@ export default {
     computed: {
         filterBySearchTerm() {
             return this.recipes.filter(recipe => {
-                return recipe.title.toLowerCase().match(this.searchTerm.toLowerCase())
+                return recipe.title.toLowerCase().match(this.searchTerm.trim().toLowerCase())
             })
         }
     },

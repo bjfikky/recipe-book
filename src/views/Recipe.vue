@@ -8,7 +8,7 @@
                 <h5 class="details">Cooking Time: <span>{{ recipe.cookingTime }}</span>Servings: <span>{{ recipe.serving }}</span> Vegetarian: <span>{{ recipe.vegetarian ? 'yes' : 'no'}}</span></h5>
             </div>
 
-            <!--TODO: Iterate over ingredients and steps-->
+            <!--TODO: Iterate over ingredients-->
 
             <div class="ingredients">
                 <h5>Ingredients:</h5>
@@ -19,18 +19,10 @@
             <div class="steps">
                 <h5>Steps:</h5>
 
-                <span>
-                    <h6>Step 1:</h6>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto atque aut, cum cumque dolore, fuga
-                    fugit illum laudantium maxime molestiae neque non possimus recusandae, repellendus soluta suscipit vel voluptas voluptates!</p>
+                <span v-for="(step, index) in recipe.steps" v-bind:key="index">
+                    <h6>Step {{ index +1 }}</h6>
+                    <p>{{ step.name }}</p>
                 </span>
-
-                <span>
-                    <h6>Step 2:</h6>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto atque aut, cum cumque dolore, fuga
-                    fugit illum laudantium maxime molestiae neque non possimus recusandae, repellendus soluta suscipit vel</p>
-                </span>
-
             </div>
         </div>
 
@@ -58,7 +50,6 @@
             getRecipe() {
                 db.collection('recipes').doc(this.recipe_id).get().then(doc => {
                     this.recipe = doc.data()
-                    console.log(this.recipe)
                 })
             }
         },
@@ -87,9 +78,5 @@
 
     .details {
         margin-bottom: -15px;
-    }
-
-    h6, h5, h4 {
-
     }
 </style>
