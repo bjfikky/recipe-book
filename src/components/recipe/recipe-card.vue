@@ -40,10 +40,6 @@
 
                 return trimedIngredients
             }
-        },
-
-        created() {
-
         }
     }
 </script>

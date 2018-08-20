@@ -1,11 +1,11 @@
 <template>
     <div class="card">
         <div class="card-content">
-            <span class="card-title"><h4>Potato Salad</h4></span>
-            <p>This is potato salad the old-fashioned way, with eggs, celery and relish. It's really good to serve with chili.</p>
+            <span class="card-title"><h4>{{ recipe.title }}</h4></span>
+            <p>{{ recipe.description }}</p>
 
             <div>
-                <h5 class="details">Cooking Time: <span>40 minutes</span>Servings: <span>5</span> Vegetarian: <span>yes</span></h5>
+                <h5 class="details">Cooking Time: <span>{{ recipe.cookingTime }}</span>Servings: <span>{{ recipe.serving }}</span> Vegetarian: <span>{{ recipe.vegetarian ? 'yes' : 'no'}}</span></h5>
             </div>
 
             <div class="ingredients">
@@ -40,8 +40,30 @@
 </template>
 
 <script>
+    import db from '../firebase/init'
+
     export default {
-        name: "Recipe"
+        name: "Recipe",
+
+        data() {
+            return {
+                recipe_id: this.$route.params.recipe_id,
+                recipe: {}
+            }
+        },
+
+        methods: {
+            getRecipe() {
+                db.collection('recipes').doc(this.recipe_id).get().then(doc => {
+                    this.recipe = doc.data()
+                    console.log(this.recipe)
+                })
+            }
+        },
+
+        created() {
+            this.getRecipe()
+        }
     }
 </script>
 
@@ -50,6 +72,7 @@
         font-size: .6em;
         margin-right: 25px ;
         font-style: italic;
+        color: rgba(0,0,0,0.87);
     }
 
     .card-content div {
@@ -62,5 +85,9 @@
 
     .details {
         margin-bottom: -15px;
+    }
+
+    h6, h5, h4 {
+
     }
 </style>

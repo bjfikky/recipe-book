@@ -2,7 +2,9 @@
     <div class="home">
         <h4>Recipes</h4>
         <div class="recipes">
-            <RecipeCard v-for="recipe in recipes" v-bind:key="recipe.id" v-bind:recipe="recipe" v-on:deleteRecipe="deleteRecipe"/>
+            <router-link v-for="recipe in recipes" v-bind:key="recipe.id" v-bind:to="{ name: 'recipe', params: {recipe_id: recipe.id} }">
+                <RecipeCard  v-bind:recipe="recipe" v-on:deleteRecipe="deleteRecipe"/>
+            </router-link>
         </div>
     </div>
 </template>
@@ -54,10 +56,17 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .recipes {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 20px;
+    grid-auto-rows: 1fr;
 }
+
+    .card {
+        height: 94.2%;
+    }
+
+
 </style>
