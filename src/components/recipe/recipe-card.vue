@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="card-action">
-            <a href="">Edit</a>
+            <router-link v-bind:to="{ name: 'editRecipe', params: { recipe_id: recipe.id } }">Edit</router-link>
             <a href="" v-on:click.prevent="deleteRecipe(recipe.id)" class="right">Delete</a>
         </div>
     </div>

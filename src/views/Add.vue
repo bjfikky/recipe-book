@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h4>Add Recipe</h4>
+        <h4>{{ recipeToEdit ? 'Edit' : 'Add'}} Recipe</h4>
         <div class="row">
 
 <!-- ====== ADD RECIPE FORM SECTION =================================================================================-->
@@ -136,6 +136,8 @@
     export default {
         name: 'add',
 
+        props: ['recipeToEdit'],
+
         data() {
             return {
                 recipe: {
@@ -206,11 +208,25 @@
             },
 
             addRecipe() {
-                db.collection('recipes').add(this.recipe).then(() => {
-                    this.$router.push({ name: 'home' })
-                })
+                if (this.recipeToEdit) {
+                    db.collection('recipes').doc(this.$route.params.recipe_id).update(this.recipe).then(() => {
+                        this.$router.push({ name: 'home' })
+                    })
+                } else {
+                    db.collection('recipes').add(this.recipe).then(() => {
+                        this.$router.push({ name: 'home' })
+                    })
+                }
+
             }
         },
+
+        watch: {
+            recipeToEdit() {
+                this.recipe = this.recipeToEdit
+            }
+        },
+
     }
 </script>
 

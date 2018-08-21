@@ -22,6 +22,14 @@ export default new Router({
             component: () => import(/* webpackChunkName: "about" */ './views/Add.vue')
         },
         {
+            path: '/Edit/:recipe_id',
+            name: 'editRecipe',
+            // route level code-splitting
+            // this generates a separate chunk (about.[hash].js) for this route
+            // which is lazy-loaded when the route is visited.
+            component: () => import(/* webpackChunkName: "about" */ './views/Edit.vue')
+        },
+        {
             path: '/Recipe/:recipe_id',
             name: 'recipe',
             // route level code-splitting
